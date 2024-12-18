@@ -32,15 +32,14 @@ class EmbeddingGenerator:
         print(f"Collection(name={collection_name})", collection_details)
         
         if f"Collection(name={collection_name})" in str(collection_details):
-            print("here")
             self.collection = self.chroma_client.get_collection(name=collection_name)
-        # else:
-        #     self.add_data_now = 1
-        #     if self.embedding_fn:
+        else:
+            self.add_data_now = 1
+            if self.embedding_fn:
 
-        #         self.collection = self.chroma_client.create_collection(name=collection_name, embedding_function=self.embedding_fn)
-        #     else:
-        #         self.collection = self.chroma_client.create_collection(name=collection_name, metadata={"hnsw:space":"cosine"})
+                self.collection = self.chroma_client.create_collection(name=collection_name, embedding_function=self.embedding_fn)
+            else:
+                self.collection = self.chroma_client.create_collection(name=collection_name, metadata={"hnsw:space":"cosine"})
 
     
     def generate_id(self, text):

@@ -6,11 +6,6 @@ import os
 
 
 def main():
-    # def ok_so_this_works():
-    #     OpenAIClient = LLMConnection.LLMModel()
-    #     response = OpenAIClient.get_completion(prompt="Just respond with Hi!")
-    #     print(response)
-    
     if os.path.exists("chunk.pkl"):
         print("Reading from pickle file")
         with open("chunk.pkl", 'rb') as file:
@@ -41,22 +36,22 @@ def main():
             for r in res_str:
                 res  = res + "|||" + r
         prompt_dict[query]={"text":res, "distances":response["distances"]}
-    print(prompt_dict)
+    
    
     
-    # openAIEmbeddings = embeddings.EmbeddingGenerator(
-    #     collection_name="OpenAIdocument_chunks",
-    #     model="OpenAI",
-    #     persist_directory="./db/"
-    #     )
+    openAIEmbeddings = embeddings.EmbeddingGenerator(
+        collection_name="OpenAIdocument_chunks",
+        model="OpenAI",
+        persist_directory="./db/"
+        )
     
-    # if openAIEmbeddings.add_data_now == 1:
-    #     openAIEmbeddings.add_data(documents=sub_chunks)
-    # prompt_dict = {}
-    # for query in queries:
-    #     prompt_dict["query"] = openAIEmbeddings.search(query=query, top_k=10)
+    if openAIEmbeddings.add_data_now == 1:
+        openAIEmbeddings.add_data(documents=sub_chunks)
+    prompt_dict = {}
+    for query in queries:
+        prompt_dict["query"] = openAIEmbeddings.search(query=query, top_k=10)
     
-    # print(prompt_dict)
+    print(prompt_dict)
     system_message = '''You would be provided a prompt containing dict with a query whose values are dict containtin
                         text and confidence. The text is delimited by "|||" to map to confidence. 
                         The confidence is in cosine distance, so the lower 
